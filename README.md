@@ -42,7 +42,7 @@ Each new game instance generation sets the most newly generated game instance to
 
 To activate keyboard input to a *previously* created game instance, either use the **Game Generator** interface to change the **Current Game Index (CGI)** or simply invoke the setter function **`setCGI(cgiValue)`** directly through the browser's console  passing the respective game instance's index as the parameter **cgiValue** to the function. A complementary getter function **`getCGI()`** is also available to obtain the present **CGI value**. 
 
-It is not required to manipulate the **`currGameIndex`** variable directly, which actually holds a **0-based** index value while CGI data as exposed on the **Game Generator** interface as well as CGI getters and setters are **1-based**. Also, modifying the **`currGameIndex`** variable directly will not provide a correct feedback to the **Game Generator** interface. 
+It is not required to manipulate the **`currGameIndex`** variable directly, which actually holds a **0-based** index value while CGI data as exposed on the **Game Generator** interface as well as **CGI getters and setters** are **1-based**. Also, modifying the **`currGameIndex`** variable directly will not provide a correct feedback to the **Game Generator** interface. 
 
 Also, you can use the **`showLogGrid(gameIndexValue)`** function  to view the raw grid / tile data of a game instance in the console. Provide the **1-based** game instance index value (as agreeing with CGI values) as the value of the **`gameIndexValue`** parameter.
 
