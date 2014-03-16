@@ -1,119 +1,72 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>R^N Games by abhishekcghosh</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<head>
+<meta charset="utf-8">
+<title>R^N Games</title>
+<link rel="stylesheet" type="text/css" href="gameStyle.css"/>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<script type="text/javascript" src="gameEngine.js"></script>
+</head>
+<body>
+	<div class="header">
+		<div class="headerName">2048, 4096, ...</div>
+		<div class="headerSub">
+			TOOLKIT FOR THE <strong>R^N GAME</strong>
+			<br/>
+			<div class="headerSub2">{ FOR WHICH PEOPLE SEEM TO BE QUITE CRAZY RIGHT NOW }</div>
+		</div>
+		<div class="headerSub2">
+			Created by <a target="_blank"  href="http://abhishekcghosh.github.io/">Abhishek Ghosh</a>
+			
+		</div>
+	</div>
+	<div class="gameArea" id="gameArea">	
+	</div>
+	<div class="footer">
+			Use <strong>ARROW KEYS</strong> to to move the tiles. When two tiles <br/>
+			with the same number touch, they <strong>merge into one!</strong>
+			<br/><br/>
+			Click on <strong>menu icon</strong> at the top right of the<br/>
+			window to open the <strong>Game Generator</strong>.
+			<br/><br/>
+			<a target="_blank" href="http://github.com/abhishekcghosh/RNGame">www.github.com/abhishekcghosh/RNGame</a>
+			<br/><br/>
+			Based on the <a href="http://gabrielecirulli.github.io/2048/">works of Gabriele Cirulli</a>, 
+			which was inspired by <a target="_blank"  href="http://itunes.apple.com/us/app/1024!/id823499224">1024 by Veewo Studio</a>
+			<br/>
+			and conceptually similar to <a target="_blank"  href="http://asherv.com/threes/">Threes by Asher Vollmer</a>.
+			<br/>
+			<br/>			
+			This code is developed from scratch but is identical in concept and created with an additional<br/>
+			agenda of developing an extensible framework for experimenting with the game itself.
+		
+	</div>
+	<div class="menuIcon" id="menuIcon">
+	</div>
+	<div class="sidePane" id="sidePane">
+		<br/><br/>
+		<strong>GAME GENERATOR</strong>
+		<br/><br/>
+		<table cellpadding="2" cellspacing="5" width="100%">
+			<tr><td>Mantissa, R [2-10]</td><td><input type="text" id="ggR" value="2" ></td></tr>
+			<tr><td>Winning Exponent, N [2-20]</td><td><input type="text" id="ggN" value="11" ></td></tr>
+			<tr><td>Grid Size, K (KxK grid) [2-20]</td><td><input type="text" id="ggK" value="4" ></td></tr>
+			<tr><td>Tile Size, T (pixels) [50-300]</td><td><input type="text" id="ggT" value="120" ></td></tr>
+			<tr><td></td><td><input type="button" value="Add Game"  id="ggB1"></td></tr>
+			<tr><td></td><td></td></tr>
+			<tr><td></td><td></td></tr>
+			<tr><td>Current Game Index, CGI</td><td><input type="label" value="0" id="ggCGILabel" disabled="disabled"></td></tr>
+			<tr><td>Set CGI to</td><td>
+										<select id="ggCGISelect">
+											<option value="0">0</option>
+											<option value="1">1</option>
+										</select>
+			</td></tr>
+			<tr><td></td><td><input type="button" id="ggB2" value="Update CGI"></td></tr>
+		</table>
+		
 
-  </head>
-  <body>
-
-      <header>
-        <h1>R^N Games</h1>
-        <p>TOOLKIT FOR THE R^N GAME </p>
-      </header>
-
-      <div id="banner">
-        <span id="logo"></span>
-
-        <a href="https://github.com/abhishekcghosh/RNGame" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/abhishekcghosh/RNGame/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/abhishekcghosh/RNGame/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
-
-    <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
-      <section>
-        <h1>
-<a name="2048-4096-" class="anchor" href="#2048-4096-"><span class="octicon octicon-link"></span></a>2048, 4096, ...</h1>
-
-<p><strong>For which people seem to be quite crazy right now...</strong></p>
-
-<p>Based on the <a href="http://gabrielecirulli.github.io/2048/">works of Gabriele Cirulli</a>, which was inspired by <a href="http://itunes.apple.com/us/app/1024!/id823499224">1024 by Veewo Studio</a> and conceptually similar to <a href="http://asherv.com/threes/">Threes by Asher Vollmer</a>. </p>
-
-<p>This code is developed from scratch but is identical in concept and created with an additional agenda of developing an extensible framework for experimenting with the game itself.</p>
-
-<h3>
-<a name="features-already-implemented" class="anchor" href="#features-already-implemented"><span class="octicon octicon-link"></span></a>Features already implemented:</h3>
-
-<ul>
-<li>
-<strong>Multiple game instances</strong> one after another in the game area.</li>
-<li>Each game fully customizable with: 
-
-<ul>
-<li>Variable <strong>Mantissa</strong> (R, example = 2 for the <a href="http://gabrielecirulli.github.io/2048/">2048 game</a>)</li>
-<li>Variable <strong>Winning Exponent</strong> (N, example = 11 for the 2048 game)</li>
-<li>Variable <strong>Grid size</strong> of the game board (K, example = 4 for the 2048 game)</li>
-<li>Variable <strong>Tile size</strong> (T in pixels, example ~100 for the 2048 game) </li>
-</ul>
-</li>
-<li>
-<strong>Game Generator</strong> options panel to create multiple instances of the game with a few clicks and experiment with different game parameters. </li>
-<li>
-<strong>Exposed functions</strong> to manipulate the game data through console.</li>
-</ul><h3>
-<a name="exposed-functions" class="anchor" href="#exposed-functions"><span class="octicon octicon-link"></span></a>Exposed functions</h3>
-
-<p>To experiment without the <strong>Game Generator</strong> interface, use the browser's JavaScript console itself.</p>
-
-<p>For example, <strong>to generate a new game instance,</strong> run the following command:</p>
-
-<p><strong><code>setupNewGame(R, N, K, T);</code></strong></p>
-
-<p>with suitable values for <strong>R, N, K, T</strong>. </p>
-
-<p>The accepted range of these values are:</p>
-
-<ul>
-<li>
-<strong>R</strong>: 2 to 10</li>
-<li>
-<strong>N</strong>: 2 to 20</li>
-<li>
-<strong>K</strong>: 2 to 20</li>
-<li>
-<strong>T</strong>: 50 to 300</li>
-</ul><p>Each new game instance generation sets the most newly generated game instance to be the <strong>current</strong> game instance, which is maintained in the global variable <strong><code>currGameIndex</code></strong> which holds the index of the game instance in the <strong><code>gridGame</code></strong> array that holds all the game instances. This is because of the design consideration that keyboard inputs (UP, DOWN, LEFT, RIGHT) should be <em>directed to only one</em> game instance at a time.</p>
-
-<p>To activate keyboard input to a <em>previously</em> created game instance, either use the <strong>Game Generator</strong> interface to change the <strong>Current Game Index (CGI)</strong> or simply invoke the setter function <strong><code>setCGI(cgiValue)</code></strong> directly through the browser's console  passing the respective game instance's index as the parameter <strong>cgiValue</strong> to the function. A complementary getter function <strong><code>getCGI()</code></strong> is also available to obtain the present <strong>CGI value</strong>. </p>
-
-<p>It is not required to manipulate the <strong><code>currGameIndex</code></strong> variable directly, which actually holds a <strong>0-based</strong> index value while CGI data as exposed on the <strong>Game Generator</strong> interface as well as <strong>CGI getters and setters</strong> are <strong>1-based</strong>. Also, modifying the <strong><code>currGameIndex</code></strong> variable directly will not provide a correct feedback to the <strong>Game Generator</strong> interface. </p>
-
-<p>Also, you can use the <strong><code>showLogGrid(gameIndexValue)</code></strong> function  to view the raw grid / tile data of a game instance in the console. Provide the <strong>1-based</strong> game instance index value (as agreeing with CGI values) as the value of the <strong><code>gameIndexValue</code></strong> parameter.</p>
-
-<h3>
-<a name="features-planned-not-yet-implemented" class="anchor" href="#features-planned-not-yet-implemented"><span class="octicon octicon-link"></span></a>Features planned, not yet implemented:</h3>
-
-<ul>
-<li>Improved features on the <strong>Game Generator</strong> interface.</li>
-<li><strong>AI Solver</strong></li>
-<li>
-<strong>Single-Input Multiple-Reflection</strong> difficulty mode.</li>
-<li>Other game enhancements.</li>
-</ul>
-      </section>
-      <footer>
-        <p>Project maintained by <a href="https://github.com/abhishekcghosh">abhishekcghosh</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
-      </footer>
-    </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
-  </body>
+	</div>
+</body>
 </html>
