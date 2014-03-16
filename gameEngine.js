@@ -7,12 +7,6 @@ var KEY_RIGHT = 39;
 var KEY_DOWN = 40;
 
 
-/*const TILE_COLOR_ARRAY = new Array( 
-		"#000000", "#0F051A","#1F0A33","#2E0F4C","#3D1466","#4C1A80","#5C1F99","#6B24B2",
-		"#7A29CC","#8A2EE6","#9933FF","#A347FF","#AD5CFF","#B870FF","#C285FF","#CC99FF",
-		"#D6ADFF","#E0C2FF","#EBD6FF","#F5EBFF","#FFFFFF" );*/
-
-// colors -> only exponents till 16 supported!!
 var TILE_COLOR_ARRAY = new Array( "#00140F", "#00291F", "#003D2E", "#00523D", "#00664C", 
 									"#007A5C", "#008F6B", "#00A37A", "#00B88A", "#00CC99", 
 									"#19D1A3", "#33D6AD", "#4DDBB8", "#66E0C2", "#80E6CC", 
@@ -203,8 +197,7 @@ Grid.prototype.addRandomTile = function () {
 				this.gameMessageContentRef.parentNode.style.opacity = 1;
 			}
 		} else {
-			// game is already non playable, do nothing
-			// game over ? !			
+			// do nothing
 		}
 	} else {
 		// has won the game, finish up!!
@@ -246,7 +239,6 @@ Grid.prototype.userMove = function(direction) {
 			break;
 		default:	
 	}	
-	//setTimeout(function() { console.log(/*shifted + ", " + */merged/* + ", " + shifted2 + ", " + happened*/); }, 500);
 }
 
 Grid.prototype.checkWin = function() {
@@ -255,9 +247,7 @@ Grid.prototype.checkWin = function() {
 		for (j = 0; j < this.gridSize; j++) {
 			if (this.grid[i][j] != null && this.grid[i][j].tileValue >= this.winningExponent) {
 				// game has been won
-				//alert("You Won!");
 				return true;
-				//this.logGrid();
 			}
 		}
 	}
@@ -289,10 +279,9 @@ Grid.prototype.addToScore = function (value) {
 	this.scoreValue += value;
 	//display score on dom
 	this.scoreKeeperRef.innerHTML = this.scoreValue;
-	//this.scoreKeeperRef.style.webkitAnimation = this.animationScoreUp;
 	setAnimation(this.scoreKeeperRef, this.animationScoreUp);
 	var that = this;
-	setTimeout(function() { setAnimation(that.scoreKeeperRef, that.animationReset);  /*that.scoreKeeperRef.style.webkitAnimation = that.animationReset; */ }, this.animationResetTime);
+	setTimeout(function() { setAnimation(that.scoreKeeperRef, that.animationReset);  }, this.animationResetTime);
 }
 
 Grid.prototype.shiftTilesLeft = function() {
@@ -395,11 +384,10 @@ Grid.prototype.mergeTilesLeft = function() {
 				this.grid[i][j - 1].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
 				this.grid[i][j - 1].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i][j - 1].tileValue % TILE_COLOR_ARRAY.length - 1];
-				//this.grid[i][j - 1].DOMRef.style.webkitAnimation = this.animationPowerUpLeft;
 				setAnimation(this.grid[i][j - 1].DOMRef, this.animationPowerUpLeft);
 				that = this;
 				thatTile = this.grid[i][j - 1];
-				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset); /*thatTile.DOMRef.style.webkitAnimation = that.animationReset;*/ }, this.animationResetTime);
+				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset);  }, this.animationResetTime);
 				this.DOMRef.removeChild(this.grid[i][j].DOMRef);
 				this.grid[i][j] = null;
 			}
@@ -422,11 +410,10 @@ Grid.prototype.mergeTilesRight = function() {
 				this.addToScore(increasedScore);
 				this.scoreValue
 				this.grid[i][j + 1].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i][j + 1].tileValue % TILE_COLOR_ARRAY.length - 1];
-				//this.grid[i][j + 1].DOMRef.style.webkitAnimation = this.animationPowerUpRight;
 				setAnimation(this.grid[i][j + 1].DOMRef, this.animationPowerUpRight);
 				that = this;
 				thatTile = this.grid[i][j + 1];
-				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset); /*thatTile.DOMRef.style.webkitAnimation = that.animationReset;*/ }, this.animationResetTime);
+				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset);  }, this.animationResetTime);
 				this.DOMRef.removeChild(this.grid[i][j].DOMRef);
 				this.grid[i][j] = null;
 			}
@@ -448,11 +435,10 @@ Grid.prototype.mergeTilesUp = function() {
 				this.grid[i - 1][j].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
 				this.grid[i - 1][j].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i - 1][j].tileValue % TILE_COLOR_ARRAY.length - 1];
-				//this.grid[i - 1][j].DOMRef.style.webkitAnimation = this.animationPowerUpUp;
 				setAnimation(this.grid[i - 1][j].DOMRef, this.animationPowerUpUp);
 				that = this;
 				thatTile = this.grid[i - 1][j];
-				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset); /*thatTile.DOMRef.style.webkitAnimation = that.animationReset;*/ }, this.animationResetTime);
+				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset);  }, this.animationResetTime);
 				this.DOMRef.removeChild(this.grid[i][j].DOMRef);
 				this.grid[i][j] = null;
 			}
@@ -474,11 +460,10 @@ Grid.prototype.mergeTilesDown = function() {
 				this.grid[i + 1][j].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
 				this.grid[i + 1][j].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i + 1][j].tileValue % TILE_COLOR_ARRAY.length - 1];
-				//this.grid[i + 1][j].DOMRef.style.webkitAnimation = this.animationPowerUpDown;
 				setAnimation(this.grid[i + 1][j].DOMRef, this.animationPowerUpDown);
 				that = this;
 				thatTile = this.grid[i + 1][j];
-				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset); /*thatTile.DOMRef.style.webkitAnimation = that.animationReset;*/ }, this.animationResetTime);
+				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset);  }, this.animationResetTime);
 				this.DOMRef.removeChild(this.grid[i][j].DOMRef);
 				this.grid[i][j] = null;
 			}
@@ -569,7 +554,7 @@ function loadGameGenData() {
 	}
 	cgiSelect.innerHTML = cgiOptions;
 }
-// INIT ROUTINES ====================================================================================================
+// INIT ROUTINES & CONSOLE COMMANDS ====================================================================================================
 
 function addEvent(obj, eventName, callbackFn) {
 	if (window.addEventListener) {
