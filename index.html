@@ -37,5 +37,31 @@
 			agenda of developing an extensible framework for experimenting with the game itself.
 		
 	</div>
+	<div class="menuIcon" id="menuIcon">
+	</div>
+	<div class="sidePane" id="sidePane">
+		<br/><br/>
+		<strong>GAME GENERATOR</strong>
+		<br/><br/>
+		<table cellpadding="2" cellspacing="5" width="100%">
+			<tr><td>Mantissa, R [2-10]</td><td><input type="text" id="ggR" value="2" ></td></tr>
+			<tr><td>Winning Exponent, N [2-20]</td><td><input type="text" id="ggN" value="11" ></td></tr>
+			<tr><td>Grid Size, K (KxK grid) [2-20]</td><td><input type="text" id="ggK" value="4" ></td></tr>
+			<tr><td>Tile Size, T (pixels) [50-300]</td><td><input type="text" id="ggT" value="120" ></td></tr>
+			<tr><td></td><td><input type="button" value="Add Game"  id="ggB1"></td></tr>
+			<tr><td></td><td></td></tr>
+			<tr><td></td><td></td></tr>
+			<tr><td>Current Game Index, CGI</td><td><input type="label" value="0" id="ggCGILabel" disabled="disabled"></td></tr>
+			<tr><td>Set CGI to</td><td>
+										<select id="ggCGISelect">
+											<option value="0">0</option>
+											<option value="1">1</option>
+										</select>
+			</td></tr>
+			<tr><td></td><td><input type="button" id="ggB2" value="Update CGI"></td></tr>
+		</table>
+		
+
+	</div>
 </body>
 </html>

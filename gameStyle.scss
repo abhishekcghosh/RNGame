@@ -211,3 +211,57 @@ a {
 		border-bottom-style: solid;
 	}
 }
+
+div.menuIcon {
+	background-image: url(menuicon.png);
+	background-repeat: no-repeat;
+	height: 60px;
+	width: 60px;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	margin-right: 10px;
+	margin-top: 6px;
+	opacity: 0.5;
+	cursor: pointer;
+	transition: opacity 0.5s;
+	z-index: 5000;
+	transform-origin: 50% 50%;	
+
+}
+
+div.sidePane {
+	position: fixed;
+	box-sizing: border-box;
+	width: 500px;
+	height: 100%;
+	top: 0px;
+	right: -500px;
+	padding: 20px;
+	font-family: $gameFont;
+	font-size: 1em;
+	color: #fff;
+	border-left: 2px solid #000;
+	transition: right 0.5s cubic-bezier(.1,.81,.46,1);
+	background-color: rgba(0,0,0,0.95);
+	z-index: 3000;
+}
+
+input {
+	background-color: rgba(255, 255, 255, 1);
+	border: 2px dotted #ccc;
+	font-family: $gameFont;
+}
+input[type="button"] {
+	background-color: #00291F;
+	border: 2px dotted #333;
+	transition: background-color 0.5s;
+	cursor:pointer;
+	color: #ccc;
+	font-weight: bold;
+	padding: 5px;
+	&:hover {
+		background-color: #007A5C;
+		color: #fff;
+	}
+}

@@ -1,10 +1,10 @@
 // JavaScript Document
 
 // GLOBAL DECLARATIONS ==============================================================================================
-const KEY_LEFT = 37;
-const KEY_UP = 38;
-const KEY_RIGHT = 39;
-const KEY_DOWN = 40;
+var KEY_LEFT = 37;
+var KEY_UP = 38;
+var KEY_RIGHT = 39;
+var KEY_DOWN = 40;
 
 
 /*const TILE_COLOR_ARRAY = new Array( 
@@ -13,7 +13,7 @@ const KEY_DOWN = 40;
 		"#D6ADFF","#E0C2FF","#EBD6FF","#F5EBFF","#FFFFFF" );*/
 
 // colors -> only exponents till 16 supported!!
-const TILE_COLOR_ARRAY = new Array( "#00140F", "#00291F", "#003D2E", "#00523D", "#00664C", 
+var TILE_COLOR_ARRAY = new Array( "#00140F", "#00291F", "#003D2E", "#00523D", "#00664C", 
 									"#007A5C", "#008F6B", "#00A37A", "#00B88A", "#00CC99", 
 									"#19D1A3", "#33D6AD", "#4DDBB8", "#66E0C2", "#80E6CC", 
 									"#99EBD6", "#B2F0E0", "#CCF5EB", "#E6FAF5", "#FFFFFF" );
@@ -25,6 +25,13 @@ var currGameIndex;
 
 // GAME LOGIC =======================================================================================================
 
+function setAnimation(obj, animStr) {
+	obj.style.webkitAnimation = animStr;
+	obj.style.msAnimation = animStr;
+	obj.style.MozAnimation = animStr;
+	obj.style.OAnimation = animStr;
+	obj.style.animation = animStr;
+}
 
 function Tile(mantissa, powerValue, posX, posY) {
 	this.tileValue = powerValue;
@@ -35,7 +42,7 @@ function Tile(mantissa, powerValue, posX, posY) {
 }
 
 
-function Grid(mantissa, gridSize, winningExponent, tileDimension, DOMParentId) {
+function Grid(mantissa, winningExponent, gridSize, tileDimension, DOMParentId) {
 	this.gamePlayable = true;
 	this.mantissa = mantissa;
 	this.gridSize = gridSize;
@@ -187,7 +194,7 @@ Grid.prototype.addRandomTile = function () {
 			this.DOMRef.appendChild(tileDiv);		
 			tileDiv.style.width = (this.tileDimension) + "px";
 			tileDiv.style.height = (this.tileDimension) + "px";
-			tileDiv.style.webkitAnimation = this.animationBirthOfATile;
+			setAnimation(tileDiv, this.animationBirthOfATile);
 			newTile.DOMRef = tileDiv;
 			this.genTileCount++;	
 			if (!this.furtherMovesPossible()) {
@@ -282,9 +289,10 @@ Grid.prototype.addToScore = function (value) {
 	this.scoreValue += value;
 	//display score on dom
 	this.scoreKeeperRef.innerHTML = this.scoreValue;
-	this.scoreKeeperRef.style.webkitAnimation = this.animationScoreUp;
+	//this.scoreKeeperRef.style.webkitAnimation = this.animationScoreUp;
+	setAnimation(this.scoreKeeperRef, this.animationScoreUp);
 	var that = this;
-	setTimeout(function() { that.scoreKeeperRef.style.webkitAnimation = that.animationReset; }, this.animationResetTime);
+	setTimeout(function() { setAnimation(that.scoreKeeperRef, that.animationReset);  /*that.scoreKeeperRef.style.webkitAnimation = that.animationReset; */ }, this.animationResetTime);
 }
 
 Grid.prototype.shiftTilesLeft = function() {
@@ -387,10 +395,11 @@ Grid.prototype.mergeTilesLeft = function() {
 				this.grid[i][j - 1].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
 				this.grid[i][j - 1].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i][j - 1].tileValue % TILE_COLOR_ARRAY.length - 1];
-				this.grid[i][j - 1].DOMRef.style.webkitAnimation = this.animationPowerUpLeft;
+				//this.grid[i][j - 1].DOMRef.style.webkitAnimation = this.animationPowerUpLeft;
+				setAnimation(this.grid[i][j - 1].DOMRef, this.animationPowerUpLeft);
 				that = this;
 				thatTile = this.grid[i][j - 1];
-				setTimeout(function() { thatTile.DOMRef.style.webkitAnimation = that.animationReset; }, this.animationResetTime);
+				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset); /*thatTile.DOMRef.style.webkitAnimation = that.animationReset;*/ }, this.animationResetTime);
 				this.DOMRef.removeChild(this.grid[i][j].DOMRef);
 				this.grid[i][j] = null;
 			}
@@ -413,10 +422,11 @@ Grid.prototype.mergeTilesRight = function() {
 				this.addToScore(increasedScore);
 				this.scoreValue
 				this.grid[i][j + 1].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i][j + 1].tileValue % TILE_COLOR_ARRAY.length - 1];
-				this.grid[i][j + 1].DOMRef.style.webkitAnimation = this.animationPowerUpRight;
+				//this.grid[i][j + 1].DOMRef.style.webkitAnimation = this.animationPowerUpRight;
+				setAnimation(this.grid[i][j + 1].DOMRef, this.animationPowerUpRight);
 				that = this;
 				thatTile = this.grid[i][j + 1];
-				setTimeout(function() { thatTile.DOMRef.style.webkitAnimation = that.animationReset; }, this.animationResetTime);
+				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset); /*thatTile.DOMRef.style.webkitAnimation = that.animationReset;*/ }, this.animationResetTime);
 				this.DOMRef.removeChild(this.grid[i][j].DOMRef);
 				this.grid[i][j] = null;
 			}
@@ -438,10 +448,11 @@ Grid.prototype.mergeTilesUp = function() {
 				this.grid[i - 1][j].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
 				this.grid[i - 1][j].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i - 1][j].tileValue % TILE_COLOR_ARRAY.length - 1];
-				this.grid[i - 1][j].DOMRef.style.webkitAnimation = this.animationPowerUpUp;
+				//this.grid[i - 1][j].DOMRef.style.webkitAnimation = this.animationPowerUpUp;
+				setAnimation(this.grid[i - 1][j].DOMRef, this.animationPowerUpUp);
 				that = this;
 				thatTile = this.grid[i - 1][j];
-				setTimeout(function() { thatTile.DOMRef.style.webkitAnimation = that.animationReset; }, this.animationResetTime);
+				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset); /*thatTile.DOMRef.style.webkitAnimation = that.animationReset;*/ }, this.animationResetTime);
 				this.DOMRef.removeChild(this.grid[i][j].DOMRef);
 				this.grid[i][j] = null;
 			}
@@ -463,10 +474,11 @@ Grid.prototype.mergeTilesDown = function() {
 				this.grid[i + 1][j].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
 				this.grid[i + 1][j].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i + 1][j].tileValue % TILE_COLOR_ARRAY.length - 1];
-				this.grid[i + 1][j].DOMRef.style.webkitAnimation = this.animationPowerUpDown;
+				//this.grid[i + 1][j].DOMRef.style.webkitAnimation = this.animationPowerUpDown;
+				setAnimation(this.grid[i + 1][j].DOMRef, this.animationPowerUpDown);
 				that = this;
 				thatTile = this.grid[i + 1][j];
-				setTimeout(function() { thatTile.DOMRef.style.webkitAnimation = that.animationReset; }, this.animationResetTime);
+				setTimeout(function() { setAnimation(thatTile.DOMRef, that.animationReset); /*thatTile.DOMRef.style.webkitAnimation = that.animationReset;*/ }, this.animationResetTime);
 				this.DOMRef.removeChild(this.grid[i][j].DOMRef);
 				this.grid[i][j] = null;
 			}
@@ -477,34 +489,142 @@ Grid.prototype.mergeTilesDown = function() {
 
 
 
-// KEYBOARD HANDLING ================================================================================================
+// USER INTERACTIONS HANDLING ================================================================================================
 function captureKey(e) {
-	var evtObj = window.event ? event : e;
-	
+	var evtObj = window.event ? event : e;	
 	var unicodeKey = evtObj.keyCode ? evtObj.keyCode : evtObj.charCode;
 	switch (unicodeKey) {
 		case KEY_LEFT:
 		case KEY_UP:			
 		case KEY_RIGHT:			
 		case KEY_DOWN:
-			evtObj.preventDefault();
+			if (evtObj.preventDefault) { 
+				// non IE
+				evtObj.preventDefault(); 
+			} else { 
+				// IE
+				evtObj.returnValue = false; 
+			}
 			gridGame[currGameIndex].userMove(unicodeKey);			
 			break;			
 		default:
 	}		
 }
 
+function menuToggle(e) {
+	var evtObj = window.event ? event : e;	
+	if (document.getElementById("sidePane").style.right != "0px") {
+		document.getElementById("sidePane").style.right = "0px";	
+		document.getElementById("menuIcon").style.opacity = 1;
+		loadGameGenData();
+	} else {
+		document.getElementById("sidePane").style.right = "-500px";	
+		document.getElementById("menuIcon").style.opacity = 0.5;
+	}
+}
 
+function gameGeneratorHandler(e) {
+	var R, N, K, T;
+	try {
+		R = parseInt(document.getElementById("ggR").value);
+		N = parseInt(document.getElementById("ggN").value);
+		K = parseInt(document.getElementById("ggK").value);
+		T = parseInt(document.getElementById("ggT").value);
+		if ((R == NaN || N == NaN || K == NaN || T == NaN)|| ( (R < 2 || R > 10) || (N < 2 || N > 20) || (K < 2 || K > 20) || (T < 50 || T > 300)) ) { 
+			alert("Invalid Values!");
+			return;
+		} 
+		document.getElementById("ggR").value = R;
+		document.getElementById("ggN").value = N;
+		document.getElementById("ggK").value = K;
+		document.getElementById("ggT").value = T;
+		setupNewGame(R, N, K, T);
+	} catch(ex) {
+		alert(ex);
+	}
+}
+
+function gameGeneratorCGIUpdate(e) {
+	var CGI;
+	try {
+		CGI = parseInt(document.getElementById("ggCGISelect").value);
+		if ((CGI == NaN)|| ( (CGI < 1 || CGI > gridGame.length))) { 
+			alert("Invalid CGI set!");
+			return;
+		} 		
+		document.getElementById("ggCGILabel").value = (CGI);
+		setCGI(CGI);		
+	} catch(ex) {
+		alert(ex);
+	}	
+}
+
+function loadGameGenData() {
+	// reverse feedback for CGI
+	document.getElementById("ggCGILabel").value = getCGI();
+	var cgiSelect = document.getElementById("ggCGISelect");
+	var i, cgiOptions = "";
+	for (i = 0; i < gridGame.length; i++) {
+		cgiOptions += "<option value='" + (i + 1) + "'>" + (i + 1) + "</option>";
+	}
+	cgiSelect.innerHTML = cgiOptions;
+}
 // INIT ROUTINES ====================================================================================================
-function setupNewGame(N, K, R, T) {
-	gridGame.push(new Grid(N, K, R, T, "gameArea"));
+
+function addEvent(obj, eventName, callbackFn) {
+	if (window.addEventListener) {
+		// non IE
+		obj.addEventListener(eventName, callbackFn);
+	} else  {
+		// IE
+		obj.attachEvent(eventName, callbackFn);
+	}
+}
+
+function setupNewGame(R, N, K, T) {
+	if ((R < 2 || R > 10) || (N < 2 || N > 20) || (K < 2 || K > 20) || (T < 50 || T > 300)) {
+		console.log("Invalid data!");
+		return;
+	}
+	gridGame.push(new Grid(R, N, K, T, "gameArea"));
 	currGameIndex = gridGame.length - 1;	
 	gridGame[currGameIndex].startGame();
+	loadGameGenData();
+	window.scrollTo(0, gridGame[currGameIndex].DOMRef.offsetTop + gridGame[currGameIndex].DOMRef.parentNode.offsetTop - 100);
+	console.log("New game instance generated!");
+}
+
+function setCGI(cgiValue) {
+	if (cgiValue < 1 || cgiValue > gridGame.length) {
+		console.log("Invalid data!");
+		return;
+	}
+	currGameIndex = (cgiValue - 1);
+	loadGameGenData();
+	window.scrollTo(0, gridGame[currGameIndex].DOMRef.offsetTop + gridGame[currGameIndex].DOMRef.parentNode.offsetTop - 100);
+	console.log("CGI updated!");
+}
+
+function getCGI() {
+	return (currGameIndex + 1);
+}
+
+function showLogGrid(gameIndexValue) {
+	if (gameIndexValue < 1 || gameIndexValue > gridGame.length) {
+		console.log("Invalid data!");
+		return;
+	}
+	gridGame[gameIndexValue - 1].logGrid();
 }
 
 function init() {	
-	document.addEventListener("keydown", captureKey);
-	setupNewGame(2, 4, 12, 120);	
+	addEvent(document, "keydown", captureKey);
+	addEvent(document.getElementById("menuIcon"), "click", menuToggle);
+
+	addEvent(document.getElementById("ggB1"), "click", gameGeneratorHandler);
+	addEvent(document.getElementById("ggB2"), "click", gameGeneratorCGIUpdate);
+	
+	setupNewGame(2, 12, 4, 120);	
 }
 
-window.addEventListener("load", init);
+addEvent(window, "load", init);
