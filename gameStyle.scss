@@ -9,7 +9,7 @@ $borderColor_grid: darken($backgroundColor_body, 15%); //#000000; //#bbada0;
 
 $borderThickness: 7px;
 
-$fontColor_tile: #fff;
+$fontColor_tile: #fff; //#008F6B; //#fff;
 
 //$tileSize: 100px;
 $gridSize: 4;
@@ -26,9 +26,9 @@ body {
 
 }
 
-div.header {
+div.header, div.footer {
 	font-family: $gameFont;
-	color: #fff;
+	color: $fontColor_tile ;
 	text-align: center;
 	padding: 20px;
 	margin-bottom: 50px;
@@ -49,6 +49,13 @@ div.headerSub2 {
 	color: $backgroundColor_tileBG;
 	line-height: 1.5;
 }
+div.footer {
+	color: $backgroundColor_tileBG;
+	font-weight: normal;
+	font-size: 0.8em;
+	margin-top: 50px;
+	margin-bottom: 0px;
+}
 
 
 div.gameArea {
@@ -61,6 +68,7 @@ div.grid {
 	background-color: $backgroundColor_grid;
 	border: ($borderThickness) solid $borderColor_grid;
 	//border-radius: 10px;
+	z-index: 100;
 }
 
 @mixin tilesBasic {
@@ -79,11 +87,13 @@ div.grid {
 div.tile {
 	@include tilesBasic;
 	overflow: hidden;
-	-webkit-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
 	transition: left 0.1s ease-in, top 0.1s ease-in; 
+	z-index: 300;
 }
 div.tileBG {
 	@include tilesBasic;
+	z-index: 200;
 }
 
 div.tile > span {
@@ -95,6 +105,7 @@ div.tile > span {
 	font-size: 32px;
 	color: $fontColor_tile;
 	overflow: hidden;
+	//text-shadow: 1px 1px 0px $borderColor_grid, -1px -1px 0px $borderColor_grid, 1px -1px 0px $borderColor_grid, -1px 1px 0px $borderColor_grid;
 }
 
 span.scoreKeeper {
@@ -109,59 +120,86 @@ span.scoreKeeper {
 	font-size: 20px;
 	color: $backgroundColor_tileBG;
 	//border-radius: 5px;
+	z-index: 150;
 }
 
 span.scoreKeeper > span {
 	font-weight: bold;
 	display: inline-block;
-	-webkit-transform-origin: bottom center;
+	transform-origin: bottom center;
 	color: $fontColor_tile;
 }
 
-@-webkit-keyframes birthOfATile {
-	0%		{ -webkit-transform: scale(0.1); }
-	100%	{ -webkit-transform: scale(1); }
+div.gameMessage {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0px; //- $borderThickness;
+	bottom: 0px;
+	left: 0px; //- $borderThickness;
+	right: 0px;
+	background-color: rgba(0,0,0,0.85);
+	//border: $borderThickness rgba(100%,0,0,0.8) solid;
+	display: table;
+	z-index: 1000;
+	opacity: 0;
+	transition: opacity 1s;
+}
+div.gameMessage > div {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	font-family: $gameFont;
+	font-size: 50px;
+	color: #fff;
 }
 
 
-@-webkit-keyframes powerUp {
-	0%		{ -webkit-transform: scale(1);  opacity: 1; }
-	50%		{ -webkit-transform: scale(1.15);  opacity: 0.5; }
-	100%	{ -webkit-transform: scale(1);   opacity: 1; }
+
+@keyframes birthOfATile {
+	0%		{ transform: scale(0.1); }
+	100%	{ transform: scale(1); }
 }
 
-@-webkit-keyframes scoreUp {
-	0% 		{ -webkit-transform: translate(0px, 0px) scale(1); }
-	50% 	{ -webkit-transform: translate(0px, -5px) scale(1.2); }
-	100% 	{ -webkit-transform: translate(0px, 0px) scale(1); }
+
+@keyframes powerUp {
+	0%		{ transform: scale(1);  opacity: 1; }
+	50%		{ transform: scale(1.15);  opacity: 0.5; }
+	100%	{ transform: scale(1);   opacity: 1; }
+}
+
+@keyframes scoreUp {
+	0% 		{ transform: translate(0px, 0px) scale(1); }
+	50% 	{ transform: translate(0px, -5px) scale(1.2); }
+	100% 	{ transform: translate(0px, 0px) scale(1); }
 
 }
 
 
 /*
-@-webkit-keyframes powerUpLeft {
-	0%		{ -webkit-transform: rotateY(0deg) scale(1); }
-	10% 	{ -webkit-transform: scale(1.3); }
-	99%		{ -webkit-transform: rotateY(-180deg) scale(1); }
-	100%	{ -webkit-transform: rotateY(0deg); }
+@keyframes powerUpLeft {
+	0%		{ transform: rotateY(0deg) scale(1); }
+	10% 	{ transform: scale(1.3); }
+	99%		{ transform: rotateY(-180deg) scale(1); }
+	100%	{ transform: rotateY(0deg); }
 }
-@-webkit-keyframes powerUpRight {
-	0%		{ -webkit-transform: rotateY(0deg) scale(1); }
-	10% 	{ -webkit-transform: scale(1.3); }
-	99%		{ -webkit-transform: rotateY(180deg) scale(1); }
-	100%	{ -webkit-transform: rotateY(0deg); }
+@keyframes powerUpRight {
+	0%		{ transform: rotateY(0deg) scale(1); }
+	10% 	{ transform: scale(1.3); }
+	99%		{ transform: rotateY(180deg) scale(1); }
+	100%	{ transform: rotateY(0deg); }
 }
-@-webkit-keyframes powerUpUp {
-	0%		{ -webkit-transform: rotateX(0deg) scale(1); }
-	10% 	{ -webkit-transform: scale(1.3); }
-	99%		{ -webkit-transform: rotateX(180deg) scale(1); }
-	100%	{ -webkit-transform: rotateX(0deg); }
+@keyframes powerUpUp {
+	0%		{ transform: rotateX(0deg) scale(1); }
+	10% 	{ transform: scale(1.3); }
+	99%		{ transform: rotateX(180deg) scale(1); }
+	100%	{ transform: rotateX(0deg); }
 }
-@-webkit-keyframes powerUpDown {
-	0%		{ -webkit-transform: rotateX(0deg) scale(1); }
-	10% 	{ -webkit-transform: scale(1.3); }
-	99%		{ -webkit-transform: rotateX(-180deg) scale(1); }
-	100%	{ -webkit-transform: rotateX(0deg); }
+@keyframes powerUpDown {
+	0%		{ transform: rotateX(0deg) scale(1); }
+	10% 	{ transform: scale(1.3); }
+	99%		{ transform: rotateX(-180deg) scale(1); }
+	100%	{ transform: rotateX(0deg); }
 }*/
 
 a {

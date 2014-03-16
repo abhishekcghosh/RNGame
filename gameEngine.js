@@ -7,11 +7,16 @@ const KEY_RIGHT = 39;
 const KEY_DOWN = 40;
 
 
-const TILE_COLOR_ARRAY = new Array( 
+/*const TILE_COLOR_ARRAY = new Array( 
 		"#000000", "#0F051A","#1F0A33","#2E0F4C","#3D1466","#4C1A80","#5C1F99","#6B24B2",
 		"#7A29CC","#8A2EE6","#9933FF","#A347FF","#AD5CFF","#B870FF","#C285FF","#CC99FF",
-		"#D6ADFF","#E0C2FF","#EBD6FF","#F5EBFF","#FFFFFF" );
+		"#D6ADFF","#E0C2FF","#EBD6FF","#F5EBFF","#FFFFFF" );*/
 
+const TILE_COLOR_ARRAY = new Array( "#000000", "#00140F", "#00291F", "#003D2E", "#00523D", 
+									"#00664C", "#007A5C", "#008F6B", "#00A37A", "#00B88A", 
+									"#00CC99", "#19D1A3", "#33D6AD", "#4DDBB8", "#66E0C2", 
+									"#80E6CC", "#99EBD6", "#B2F0E0", "#CCF5EB", "#E6FAF5", 
+									"#FFFFFF" );
 
 
 var gridCount = 0;
@@ -42,6 +47,7 @@ function Grid(mantissa, gridSize, winningExponent, tileDimension, DOMParentId) {
 	this.DOMParentId = DOMParentId;
 	this.DOMRef = null; 
 	this.scoreKeeperRef = null;
+	this.gameMessageContentRef = null;
 
 	this.animationPowerUpLeft = "powerUp 0.5s ease-out";
 	this.animationPowerUpRight = "powerUp 0.5s ease-out";
@@ -95,8 +101,22 @@ Grid.prototype.createDOM = function (gridId) {
 	scoreKeeperValue.appendChild(document.createTextNode("0"));
 	scoreKeeper.appendChild(scoreKeeperValue);
 	newGrid.appendChild(scoreKeeper);
+
+	var gameMessage = document.createElement("DIV");
+	gameMessage.setAttribute("class", "gameMessage");
+	gameMessage.setAttribute("id", "gameMessage" + gridId);
+	var gameMessageContent = document.createElement("DIV");
+	gameMessageContent.setAttribute("id", "gameMessageContent" + gridId);
+	var gameMessageContentText = document.createTextNode("");
+	gameMessageContent.appendChild(gameMessageContentText);
+	gameMessage.appendChild(gameMessageContent);
+
+	newGrid.appendChild(gameMessage);
+
+
 	this.DOMRef = newGrid;
 	this.scoreKeeperRef = scoreKeeperValue;
+	this.gameMessageContentRef = gameMessageContent;
 	document.getElementById(this.DOMParentId).appendChild(newGrid);
 }
 
@@ -166,25 +186,18 @@ Grid.prototype.addRandomTile = function () {
 			this.genTileCount++;	
 			if (!this.furtherMovesPossible()) {
 				this.gamePlayable = false;
-				alert("You lose!");	
+				this.gameMessageContentRef.innerHTML = "Game Over!";
+				this.gameMessageContentRef.parentNode.style.opacity = 1;
 			}
-			//return true;
 		} else {
 			// game is already non playable, do nothing
-			// game over ? !
-			// check for possible moves, if possible moves == none, then
-			//console.log("GAME OVER! GRID FULL!!");
-			//if (!this.furtherMovesPossible()) {
-
-			//	alert("You lose!");	
-			//}			
-			//return false;
+			// game over ? !			
 		}
 	} else {
 		// has won the game, finish up!!
 		this.gamePlayable = false;
-		alert("You won!");
-		//return false;
+		this.gameMessageContentRef.innerHTML = "You Won!";
+		this.gameMessageContentRef.parentNode.style.opacity = 1;
 	}
 	
 	
@@ -192,35 +205,38 @@ Grid.prototype.addRandomTile = function () {
 
 Grid.prototype.userMove = function(direction) {
 	var that = this;
+	var happened = false, shifted = false, shifted2 = false; merged = false;
 	switch(direction) {
 		case KEY_LEFT:
-			this.shiftTilesLeft();
-			setTimeout(function() { that.mergeTilesLeft(); }, 100);
-			setTimeout(function() { that.shiftTilesLeft(); }, 200);
-			setTimeout(function() { that.addRandomTile(); }, 300);
+			shifted = this.shiftTilesLeft();
+			setTimeout(function() { merged = that.mergeTilesLeft(); }, 100); 
+			if (merged) { setTimeout(function() { shifted2 = that.shiftTilesLeft(); }, 200); }
+			happened = shifted || merged || shifted2;
+			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
 			break;
 		case KEY_UP:
-			this.shiftTilesUp();
-			setTimeout(function() { that.mergeTilesUp(); }, 100);
-			setTimeout(function() { that.shiftTilesUp(); }, 200);
-			setTimeout(function() { that.addRandomTile(); }, 300);
+			shifted = this.shiftTilesUp();
+			setTimeout(function() { merged = that.mergeTilesUp(); }, 100); 
+			if (merged) { setTimeout(function() { shifted2 = that.shiftTilesUp(); }, 200); }
+			happened = shifted || merged || shifted2;
+			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
 			break;
 		case KEY_RIGHT:
-			this.shiftTilesRight();
-			setTimeout(function() { that.mergeTilesRight(); }, 100);
-			setTimeout(function() { that.shiftTilesRight(); }, 200);
-			setTimeout(function() { that.addRandomTile(); }, 300);
+			shifted = this.shiftTilesRight();
+			setTimeout(function() { merged = that.mergeTilesRight(); }, 100); 
+			if (merged) { setTimeout(function() { shifted2 = that.shiftTilesRight(); }, 200); }
+			happened = shifted || merged || shifted2;
+			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
 			break;
 		case KEY_DOWN:
-			this.shiftTilesDown();
-			setTimeout(function() { that.mergeTilesDown(); }, 100);
-			setTimeout(function() { that.shiftTilesDown(); }, 200);
-			setTimeout(function() { that.addRandomTile(); }, 300);
+			shifted = this.shiftTilesDown();
+			setTimeout(function() { merged = that.mergeTilesDown(); }, 100); 
+			if (merged) { setTimeout(function() { shifted2 = that.shiftTilesDown(); }, 200); }
+			happened = shifted || merged || shifted2;
+			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
 			break;
 		default:	
-	}
-	//setTimeout(function() { that.logGrid(); }, 500);
-	
+	}	
 }
 
 Grid.prototype.checkWin = function() {
@@ -271,12 +287,14 @@ Grid.prototype.addToScore = function (value) {
 Grid.prototype.shiftTilesLeft = function() {
 	var i, j;
 	var movedInLastIteration = true;
+	var gotShifted = false;
 	while(movedInLastIteration == true) {
 		movedInLastIteration = false;
 		for (i = 0; i < this.gridSize; i++) {
 			for (j = 1; j < this.gridSize; j++) {
 				if (this.grid[i][j] != null && this.grid[i][j - 1] == null) {
 					// shiftable, since left pos is empty
+					gotShifted = true;
 					this.grid[i][j - 1] = this.grid[i][j];
 					this.grid[i][j - 1].DOMRef.style.left = (this.tileDimension * (j - 1)) + "px";
 					this.grid[i][j] = null;
@@ -285,16 +303,19 @@ Grid.prototype.shiftTilesLeft = function() {
 			}
 		}
 	}
+	return gotShifted;
 }
 Grid.prototype.shiftTilesRight = function() {
 	var i, j;
 	var movedInLastIteration = true;
+	var gotShifted = false;
 	while(movedInLastIteration == true) {
 		movedInLastIteration = false;
 		for (i = 0; i < this.gridSize; i++) {
 			for (j = this.gridSize - 2; j >= 0; j--) {
 				if (this.grid[i][j] != null && this.grid[i][j + 1] == null) {
 					// shiftable, since right pos is empty
+					gotShifted = true;
 					this.grid[i][j + 1] = this.grid[i][j];
 					this.grid[i][j + 1].DOMRef.style.left = (this.tileDimension * (j + 1)) + "px";
 					this.grid[i][j] = null;
@@ -303,16 +324,19 @@ Grid.prototype.shiftTilesRight = function() {
 			}
 		}
 	}
+	return gotShifted;
 }
 Grid.prototype.shiftTilesUp = function() {
 	var i, j;
 	var movedInLastIteration = true;
+	var gotShifted = false;
 	while(movedInLastIteration == true) {
 		movedInLastIteration = false;
 		for (i = 1; i < this.gridSize; i++) {
 			for (j = 0; j < this.gridSize; j++) {
 				if (this.grid[i][j] != null && this.grid[i - 1][j] == null) {
 					// shiftable, since right pos is empty
+					gotShifted = true;
 					this.grid[i - 1][j] = this.grid[i][j];
 					this.grid[i - 1][j].DOMRef.style.top = (this.tileDimension * (i - 1)) + "px";
 					this.grid[i][j] = null;
@@ -321,16 +345,19 @@ Grid.prototype.shiftTilesUp = function() {
 			}
 		}
 	}
+	return gotShifted;
 }
 Grid.prototype.shiftTilesDown = function() {
 	var i, j;
 	var movedInLastIteration = true;
+	var gotShifted = false;
 	while(movedInLastIteration == true) {
 		movedInLastIteration = false;
 		for (i = this.gridSize - 2; i >= 0; i--) {
 			for (j = 0; j < this.gridSize; j++) {
 				if (this.grid[i][j] != null && this.grid[i + 1][j] == null) {
 					// shiftable, since right pos is empty
+					gotShifted = true;
 					this.grid[i + 1][j] = this.grid[i][j];
 					this.grid[i + 1][j].DOMRef.style.top = (this.tileDimension * (i + 1)) + "px";
 					this.grid[i][j] = null;
@@ -339,17 +366,20 @@ Grid.prototype.shiftTilesDown = function() {
 			}
 		}
 	}
+	return gotShifted;
 }
 
 
 Grid.prototype.mergeTilesLeft = function() {
 	var i, j;
 	var that, thatTile;
+	var gotMerged = false;
 	for (i = 0; i < this.gridSize; i++) {
 		for (j = 1; j < this.gridSize; j++) {
 			if (this.grid[i][j] != null && this.grid[i][j - 1] != null && this.grid[i][j].tileValue == this.grid[i][j - 1].tileValue) {
 				// shiftable, since left pos is empty
 				this.grid[i][j - 1].tileValue += 1;				
+				gotMerged = true;
 				var increasedScore = Math.pow(this.mantissa, this.grid[i][j - 1].tileValue - 1);
 				this.grid[i][j - 1].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
@@ -363,15 +393,18 @@ Grid.prototype.mergeTilesLeft = function() {
 			}
 		}
 	}
+	return gotMerged;
 }
 Grid.prototype.mergeTilesRight = function() {
 	var i, j;
 	var that, thatTile;
+	var gotMerged = false;
 	for (i = 0; i < this.gridSize; i++) {
 		for (j = this.gridSize - 2; j >= 0; j--) {
 			if (this.grid[i][j] != null && this.grid[i][j + 1] != null && this.grid[i][j].tileValue == this.grid[i][j + 1].tileValue) {
 				// shiftable, since left pos is empty
 				this.grid[i][j + 1].tileValue += 1;
+				gotMerged = true;
 				var increasedScore = Math.pow(this.mantissa, this.grid[i][j + 1].tileValue - 1);
 				this.grid[i][j + 1].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
@@ -386,15 +419,18 @@ Grid.prototype.mergeTilesRight = function() {
 			}
 		}
 	}
+	return gotMerged;
 }
 Grid.prototype.mergeTilesUp = function() {
 	var i, j;
 	var that, thatTile;
+	var gotMerged = false;
 	for (i = 1; i < this.gridSize; i++) {
 		for (j = 0; j < this.gridSize; j++) {
 			if (this.grid[i][j] != null && this.grid[i - 1][j] != null && this.grid[i][j].tileValue == this.grid[i - 1][j].tileValue) {
 				// shiftable, since left pos is empty
 				this.grid[i - 1][j].tileValue += 1;
+				gotMerged = true;
 				var increasedScore = Math.pow(this.mantissa, this.grid[i - 1][j].tileValue - 1);
 				this.grid[i - 1][j].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
@@ -408,15 +444,18 @@ Grid.prototype.mergeTilesUp = function() {
 			}
 		}
 	}
+	return gotMerged;
 }
 Grid.prototype.mergeTilesDown = function() {
 	var i, j;
 	var that, thatTile;
+	var gotMerged = false;
 	for (i = this.gridSize - 2; i >= 0; i--) {
 		for (j = 0; j < this.gridSize; j++) {
 			if (this.grid[i][j] != null && this.grid[i + 1][j] != null && this.grid[i][j].tileValue == this.grid[i + 1][j].tileValue) {
 				// shiftable, since left pos is empty
 				this.grid[i + 1][j].tileValue += 1;
+				gotMerged = true;
 				var increasedScore = Math.pow(this.mantissa, this.grid[i + 1][j].tileValue - 1);
 				this.grid[i + 1][j].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
@@ -430,6 +469,7 @@ Grid.prototype.mergeTilesDown = function() {
 			}
 		}
 	}
+	return gotMerged;
 }
 
 
