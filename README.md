@@ -21,7 +21,7 @@ This code is developed from scratch but is identical in concept and created with
 
 **Game Generator** interface is *not yet developed*, so for the moment have to generate through the Browser's JavaScript console itself.
 
-**To generate a new game instance, just run the following the console:**
+**To generate a new game instance,** just run the following in console:
 
 **`setupNewGame(N, K, R, T);`**
 
