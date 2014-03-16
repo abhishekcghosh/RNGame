@@ -19,25 +19,28 @@ This code is developed from scratch but is identical in concept and created with
 	* Variable **Grid size** of the game board (K, example = 4 for the 2048 game)
 	* Variable **Tile size** (T, example ~100px for the 2048 game) 
 
-**Game Generator** interface is *not yet developed*, for for the moment have to generate through the Browser's JavaScript console itself.
+**Game Generator** interface is *not yet developed*, so for the moment have to generate through the Browser's JavaScript console itself.
 
 **To generate a new game instance, just run the following the console:**
 
 **`setupNewGame(N, K, R, T);`**
 
-with suitable values of N, K, R, T.
+with suitable values for N, K, R, T.
 
-**Note:** Each new game instance generation sets the most newly generated game instance to be the **current** game instance, which is maintained in the global variable `currGameIndex` which holds the index of the game instance in the `gridGame` array that holds all the game instances.
+**Note:** Each new game instance generation sets the most newly generated game instance to be the **current** game instance, which is maintained in the global variable `currGameIndex` which holds the index of the game instance in the `gridGame` array that holds all the game instances. This is because of the design consideration that keyboard inputs (UP, DOWN, LEFT, RIGHT) should be *directed to only one* game instance at a time.
 
 To go back to a previous change, simply change the value of `currGameIndex` to the respective game instance's index.
 
 
 
-### Features yet to be developed:
+### Features planned, not yet implemented:
 
-* Game Enhancements
 * **Control Panel** for the Game Generator
-* Game Solver
+* **AI Solver**
+* **Single-Input Multiple-Reflection** difficulty mode
+* Other Game Enhancements 
+
+
 
 
 
