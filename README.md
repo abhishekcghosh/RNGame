@@ -19,10 +19,9 @@ This code is developed from scratch but is identical in concept and created with
 	* Variable **Grid size** of the game board (K, example = 4 for the 2048 game)
 	* Variable **Tile size** (T in pixels, example ~100 for the 2048 game) 
 * **Game Generator** options panel to create multiple instances of the game with a few clicks and experiment with different game parameters. 
+* **Exposed functions** to manipulate the game data through console.
 
 ### Exposed functions
-
-All game instances are stored in the array **`gridGame`**.
 
 To experiment without the **Game Generator** interface, use the browser's JavaScript console itself.
 
