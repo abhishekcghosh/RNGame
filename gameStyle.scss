@@ -1,0 +1,175 @@
+@charset "utf-8";
+/* SCSS Document */
+
+$backgroundColor_body: #333;
+$backgroundColor_tileBG: #666; //#ccc0b3;
+
+$backgroundColor_grid: darken($backgroundColor_body, 10%); //#000000; //#bbada0;
+$borderColor_grid: darken($backgroundColor_body, 15%); //#000000; //#bbada0;
+
+$borderThickness: 7px;
+
+$fontColor_tile: #fff;
+
+//$tileSize: 100px;
+$gridSize: 4;
+
+$gameFont: "Helvetica";
+
+body {
+	margin: 0px;
+	padding: 0px;
+	border: none;
+	background-color: $backgroundColor_body;
+	background-image: url('lineoverlayw5.png');
+	background-repeat: repeat;
+
+}
+
+div.header {
+	font-family: $gameFont;
+	color: #fff;
+	text-align: center;
+	padding: 20px;
+	margin-bottom: 50px;
+	background-color: darken($backgroundColor_body, 10%);
+	background-image: url('lineoverlayw5.png');
+	background-repeat: repeat;
+}
+div.headerName {
+	font-size: 5em;
+	font-weight: bold;
+}
+div.headerSub {
+	font-size: 1.5em;
+}
+div.headerSub2 {
+	padding: 5px;
+	font-size: 0.8em;
+	color: $backgroundColor_tileBG;
+	line-height: 1.5;
+}
+
+
+div.gameArea {
+	position: relative;
+
+}
+div.grid {
+	position: relative;
+	margin: 100px auto;
+	background-color: $backgroundColor_grid;
+	border: ($borderThickness) solid $borderColor_grid;
+	//border-radius: 10px;
+}
+
+@mixin tilesBasic {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: $backgroundColor_tileBG;
+	background-image: url('hexpattern50w5.png');
+	background-repeat: repeat;
+	border: $borderThickness solid $borderColor_grid;
+	//border-radius: 12px;
+	box-sizing: border-box;
+	display: table;
+}
+
+div.tile {
+	@include tilesBasic;
+	overflow: hidden;
+	-webkit-transform-origin: 50% 50%;
+	transition: left 0.1s ease-in, top 0.1s ease-in; 
+}
+div.tileBG {
+	@include tilesBasic;
+}
+
+div.tile > span {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	font-family: $gameFont;
+	font-weight: bold;
+	font-size: 32px;
+	color: $fontColor_tile;
+	overflow: hidden;
+}
+
+span.scoreKeeper {
+	background-color: $backgroundColor_grid;
+	position: absolute;
+	right: - $borderThickness;
+	bottom: 100%;
+	margin-bottom: $borderThickness;
+	padding: 10px;
+	padding-bottom: 5px;
+	font-family: $gameFont;
+	font-size: 20px;
+	color: $backgroundColor_tileBG;
+	//border-radius: 5px;
+}
+
+span.scoreKeeper > span {
+	font-weight: bold;
+	display: inline-block;
+	-webkit-transform-origin: bottom center;
+	color: $fontColor_tile;
+}
+
+@-webkit-keyframes birthOfATile {
+	0%		{ -webkit-transform: scale(0.1); }
+	100%	{ -webkit-transform: scale(1); }
+}
+
+
+@-webkit-keyframes powerUp {
+	0%		{ -webkit-transform: scale(1);  opacity: 1; }
+	50%		{ -webkit-transform: scale(1.15);  opacity: 0.5; }
+	100%	{ -webkit-transform: scale(1);   opacity: 1; }
+}
+
+@-webkit-keyframes scoreUp {
+	0% 		{ -webkit-transform: translate(0px, 0px) scale(1); }
+	50% 	{ -webkit-transform: translate(0px, -5px) scale(1.2); }
+	100% 	{ -webkit-transform: translate(0px, 0px) scale(1); }
+
+}
+
+
+/*
+@-webkit-keyframes powerUpLeft {
+	0%		{ -webkit-transform: rotateY(0deg) scale(1); }
+	10% 	{ -webkit-transform: scale(1.3); }
+	99%		{ -webkit-transform: rotateY(-180deg) scale(1); }
+	100%	{ -webkit-transform: rotateY(0deg); }
+}
+@-webkit-keyframes powerUpRight {
+	0%		{ -webkit-transform: rotateY(0deg) scale(1); }
+	10% 	{ -webkit-transform: scale(1.3); }
+	99%		{ -webkit-transform: rotateY(180deg) scale(1); }
+	100%	{ -webkit-transform: rotateY(0deg); }
+}
+@-webkit-keyframes powerUpUp {
+	0%		{ -webkit-transform: rotateX(0deg) scale(1); }
+	10% 	{ -webkit-transform: scale(1.3); }
+	99%		{ -webkit-transform: rotateX(180deg) scale(1); }
+	100%	{ -webkit-transform: rotateX(0deg); }
+}
+@-webkit-keyframes powerUpDown {
+	0%		{ -webkit-transform: rotateX(0deg) scale(1); }
+	10% 	{ -webkit-transform: scale(1.3); }
+	99%		{ -webkit-transform: rotateX(-180deg) scale(1); }
+	100%	{ -webkit-transform: rotateX(0deg); }
+}*/
+
+a {
+	text-decoration: none;
+	font-weight: bold;
+	color: inherit;
+	border-bottom: 1px dotted;
+	&:hover {
+		border-bottom-style: solid;
+	}
+}
