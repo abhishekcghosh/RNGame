@@ -15,7 +15,7 @@ This code is developed from scratch but is identical in concept and created with
 * **Multiple game instances** one after another in the game area.
 * Each game fully customizable with: 
 	* Variable **Mantissa** (R, example = 2 for the [2048 game](http://gabrielecirulli.github.io/2048/))
-	* Variable **Winning Exponent** (N, example = 11 for the 2028 game)
+	* Variable **Winning Exponent** (N, example = 11 for the 2048 game)
 	* Variable **Grid size** of the game board (K, example = 4 for the 2048 game)
 	* Variable **Tile size** (T, example ~100px for the 2048 game) 
 
