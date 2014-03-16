@@ -210,28 +210,28 @@ Grid.prototype.userMove = function(direction) {
 		case KEY_LEFT:
 			shifted = this.shiftTilesLeft();
 			setTimeout(function() { merged = that.mergeTilesLeft(); }, 100); 
-			if (merged) { setTimeout(function() { shifted2 = that.shiftTilesLeft(); }, 200); }
+			setTimeout(function() { shifted2 = that.shiftTilesLeft(); }, 200); 
 			happened = shifted || merged || shifted2;
 			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
 			break;
 		case KEY_UP:
 			shifted = this.shiftTilesUp();
 			setTimeout(function() { merged = that.mergeTilesUp(); }, 100); 
-			if (merged) { setTimeout(function() { shifted2 = that.shiftTilesUp(); }, 200); }
+			setTimeout(function() { shifted2 = that.shiftTilesUp(); }, 200);
 			happened = shifted || merged || shifted2;
 			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
 			break;
 		case KEY_RIGHT:
 			shifted = this.shiftTilesRight();
 			setTimeout(function() { merged = that.mergeTilesRight(); }, 100); 
-			if (merged) { setTimeout(function() { shifted2 = that.shiftTilesRight(); }, 200); }
+			setTimeout(function() { shifted2 = that.shiftTilesRight(); }, 200); 
 			happened = shifted || merged || shifted2;
 			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
 			break;
 		case KEY_DOWN:
 			shifted = this.shiftTilesDown();
 			setTimeout(function() { merged = that.mergeTilesDown(); }, 100); 
-			if (merged) { setTimeout(function() { shifted2 = that.shiftTilesDown(); }, 200); }
+			setTimeout(function() { shifted2 = that.shiftTilesDown(); }, 200); 
 			happened = shifted || merged || shifted2;
 			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
 			break;
