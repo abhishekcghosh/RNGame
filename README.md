@@ -2,7 +2,7 @@
 ======
 
 ## TOOLKIT FOR THE R^N GAME
-### { FOR WHICH PEOPLE SEEM QUITE CRAZY RIGHT NOW }
+**For which people seem to be quite crazy right now...**
 
 Based on the [works of Gabriele Cirulli](http://gabrielecirulli.github.io/2048/), which was inspired by [1024 by Veewo Studio](http://itunes.apple.com/us/app/1024!/id823499224) and conceptually similar to [Threes by Asher Vollmer](http://asherv.com/threes/). 
 
