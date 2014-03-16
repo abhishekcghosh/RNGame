@@ -491,16 +491,17 @@ function captureKey(e) {
 	}		
 }
 
+
 // INIT ROUTINES ====================================================================================================
-function init() {
-
-	gridGame.push(new Grid(2, 4, 12, 120, "gameArea"));
-	currGameIndex = gridGame.length - 1;
-	
+function setupNewGame(N, K, R, T) {
+	gridGame.push(new Grid(N, K, R, T, "gameArea"));
+	currGameIndex = gridGame.length - 1;	
 	gridGame[currGameIndex].startGame();
+}
 
+function init() {	
 	document.addEventListener("keydown", captureKey);
-	
+	setupNewGame(2, 4, 12, 100);	
 }
 
 window.addEventListener("load", init);
