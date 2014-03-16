@@ -501,7 +501,7 @@ function setupNewGame(N, K, R, T) {
 
 function init() {	
 	document.addEventListener("keydown", captureKey);
-	setupNewGame(2, 4, 12, 100);	
+	setupNewGame(2, 4, 12, 120);	
 }
 
 window.addEventListener("load", init);
