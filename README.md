@@ -6,8 +6,6 @@
 
 Based on the [works of Gabriele Cirulli](http://gabrielecirulli.github.io/2048/), which was inspired by [1024 by Veewo Studio](http://itunes.apple.com/us/app/1024!/id823499224) and conceptually similar to [Threes by Asher Vollmer](http://asherv.com/threes/). 
 
-###{ WORK IN PROGRESS } 
-
 This code is developed from scratch but is identical in concept and created with an additional agenda of developing an extensible framework for experimenting with the game itself.
 
 ### Features already implemented:
