@@ -12,11 +12,11 @@ const KEY_DOWN = 40;
 		"#7A29CC","#8A2EE6","#9933FF","#A347FF","#AD5CFF","#B870FF","#C285FF","#CC99FF",
 		"#D6ADFF","#E0C2FF","#EBD6FF","#F5EBFF","#FFFFFF" );*/
 
-const TILE_COLOR_ARRAY = new Array( "#000000", "#00140F", "#00291F", "#003D2E", "#00523D", 
-									"#00664C", "#007A5C", "#008F6B", "#00A37A", "#00B88A", 
-									"#00CC99", "#19D1A3", "#33D6AD", "#4DDBB8", "#66E0C2", 
-									"#80E6CC", "#99EBD6", "#B2F0E0", "#CCF5EB", "#E6FAF5", 
-									"#FFFFFF" );
+// colors -> only exponents till 16 supported!!
+const TILE_COLOR_ARRAY = new Array( "#00140F", "#00291F", "#003D2E", "#00523D", "#00664C", 
+									"#007A5C", "#008F6B", "#00A37A", "#00B88A", "#00CC99", 
+									"#19D1A3", "#33D6AD", "#4DDBB8", "#66E0C2", "#80E6CC", 
+									"#99EBD6", "#B2F0E0", "#CCF5EB", "#E6FAF5", "#FFFFFF" );
 
 
 var gridCount = 0;
@@ -27,8 +27,8 @@ var currGameIndex;
 
 
 function Tile(mantissa, powerValue, posX, posY) {
-	this.tileValue = Math.pow(mantissa, powerValue);
-	this.tileColor = TILE_COLOR_ARRAY[powerValue - 1];
+	this.tileValue = powerValue;
+	this.tileColor = TILE_COLOR_ARRAY[powerValue % TILE_COLOR_ARRAY.length - 1];
 	this.posX = posX;
 	this.posY = posY;
 	this.DOMRef = null;
@@ -164,18 +164,24 @@ Grid.prototype.addRandomTile = function () {
 			var randomPosX = Math.floor(randomPos / this.gridSize);
 			var randomPosY = randomPos % this.gridSize;
 			// create a new random tile
-			var newTile = new Tile(this.mantissa, 1, randomPosX, randomPosY);
+			// probability - launch with exponent 1 or exponent 2
+			var newTile;
+			if(Math.random() > 0.2) {
+				newTile = new Tile(this.mantissa, 1, randomPosX, randomPosY);
+			} else {
+				newTile = new Tile(this.mantissa, 2, randomPosX, randomPosY);
+			}
 			// assign it to the vacant spot	
 			this.grid[randomPosX][randomPosY] = newTile;
 			// do the DOM manipulation part
 			var tileDiv = document.createElement("DIV");
 			var tileSpan = document.createElement("SPAN");
-			var tileSpanText = document.createTextNode(newTile.tileValue);
+			var tileSpanText = document.createTextNode(Math.pow(this.mantissa, newTile.tileValue));
 			tileSpan.appendChild(tileSpanText);
 			tileDiv.appendChild(tileSpan);				
 			tileDiv.setAttribute("class", "tile");
 			tileDiv.setAttribute("id", "tile" + this.genTileCount);
-			tileDiv.style.backgroundColor = TILE_COLOR_ARRAY[newTile.tileValue - 1];
+			tileDiv.style.backgroundColor = TILE_COLOR_ARRAY[newTile.tileValue % TILE_COLOR_ARRAY.length - 1];
 			tileDiv.style.top = Math.floor(newTile.posX * this.tileDimension) + "px";
 			tileDiv.style.left = Math.floor(newTile.posY * this.tileDimension) + "px";		
 			this.DOMRef.appendChild(tileDiv);		
@@ -210,40 +216,37 @@ Grid.prototype.userMove = function(direction) {
 		case KEY_LEFT:
 			shifted = this.shiftTilesLeft();
 			setTimeout(function() { merged = that.mergeTilesLeft(); }, 100); 
-			setTimeout(function() { shifted2 = that.shiftTilesLeft(); }, 200); 
-			happened = shifted || merged || shifted2;
-			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
+			setTimeout(function() { shifted2 = that.shiftTilesLeft(); }, 200); 			
+			setTimeout(function() { if(shifted || merged || shifted2) { that.addRandomTile(); } }, 300); 
 			break;
 		case KEY_UP:
 			shifted = this.shiftTilesUp();
 			setTimeout(function() { merged = that.mergeTilesUp(); }, 100); 
 			setTimeout(function() { shifted2 = that.shiftTilesUp(); }, 200);
-			happened = shifted || merged || shifted2;
-			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
+			setTimeout(function() { if(shifted || merged || shifted2) { that.addRandomTile(); } }, 300); 
 			break;
 		case KEY_RIGHT:
 			shifted = this.shiftTilesRight();
 			setTimeout(function() { merged = that.mergeTilesRight(); }, 100); 
 			setTimeout(function() { shifted2 = that.shiftTilesRight(); }, 200); 
-			happened = shifted || merged || shifted2;
-			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
+			setTimeout(function() { if(shifted || merged || shifted2) { that.addRandomTile(); } }, 300); 
 			break;
 		case KEY_DOWN:
 			shifted = this.shiftTilesDown();
 			setTimeout(function() { merged = that.mergeTilesDown(); }, 100); 
 			setTimeout(function() { shifted2 = that.shiftTilesDown(); }, 200); 
-			happened = shifted || merged || shifted2;
-			if (happened) { setTimeout(function() { that.addRandomTile(); }, 300); }
+			setTimeout(function() { if(shifted || merged || shifted2) { that.addRandomTile(); } }, 300); 
 			break;
 		default:	
 	}	
+	//setTimeout(function() { console.log(/*shifted + ", " + */merged/* + ", " + shifted2 + ", " + happened*/); }, 500);
 }
 
 Grid.prototype.checkWin = function() {
 	var i, j;
 	for (i = 0; i < this.gridSize; i++) {
 		for (j = 0; j < this.gridSize; j++) {
-			if (this.grid[i][j] != null && this.grid[i][j].tileValue > this.winningExponent) {
+			if (this.grid[i][j] != null && this.grid[i][j].tileValue >= this.winningExponent) {
 				// game has been won
 				//alert("You Won!");
 				return true;
@@ -380,10 +383,10 @@ Grid.prototype.mergeTilesLeft = function() {
 				// shiftable, since left pos is empty
 				this.grid[i][j - 1].tileValue += 1;				
 				gotMerged = true;
-				var increasedScore = Math.pow(this.mantissa, this.grid[i][j - 1].tileValue - 1);
+				var increasedScore = Math.pow(this.mantissa, this.grid[i][j - 1].tileValue);
 				this.grid[i][j - 1].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
-				this.grid[i][j - 1].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i][j - 1].tileValue - 1];
+				this.grid[i][j - 1].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i][j - 1].tileValue % TILE_COLOR_ARRAY.length - 1];
 				this.grid[i][j - 1].DOMRef.style.webkitAnimation = this.animationPowerUpLeft;
 				that = this;
 				thatTile = this.grid[i][j - 1];
@@ -405,11 +408,11 @@ Grid.prototype.mergeTilesRight = function() {
 				// shiftable, since left pos is empty
 				this.grid[i][j + 1].tileValue += 1;
 				gotMerged = true;
-				var increasedScore = Math.pow(this.mantissa, this.grid[i][j + 1].tileValue - 1);
+				var increasedScore = Math.pow(this.mantissa, this.grid[i][j + 1].tileValue);
 				this.grid[i][j + 1].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
 				this.scoreValue
-				this.grid[i][j + 1].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i][j + 1].tileValue - 1];
+				this.grid[i][j + 1].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i][j + 1].tileValue % TILE_COLOR_ARRAY.length - 1];
 				this.grid[i][j + 1].DOMRef.style.webkitAnimation = this.animationPowerUpRight;
 				that = this;
 				thatTile = this.grid[i][j + 1];
@@ -431,10 +434,10 @@ Grid.prototype.mergeTilesUp = function() {
 				// shiftable, since left pos is empty
 				this.grid[i - 1][j].tileValue += 1;
 				gotMerged = true;
-				var increasedScore = Math.pow(this.mantissa, this.grid[i - 1][j].tileValue - 1);
+				var increasedScore = Math.pow(this.mantissa, this.grid[i - 1][j].tileValue);
 				this.grid[i - 1][j].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
-				this.grid[i - 1][j].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i - 1][j].tileValue - 1];
+				this.grid[i - 1][j].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i - 1][j].tileValue % TILE_COLOR_ARRAY.length - 1];
 				this.grid[i - 1][j].DOMRef.style.webkitAnimation = this.animationPowerUpUp;
 				that = this;
 				thatTile = this.grid[i - 1][j];
@@ -456,10 +459,10 @@ Grid.prototype.mergeTilesDown = function() {
 				// shiftable, since left pos is empty
 				this.grid[i + 1][j].tileValue += 1;
 				gotMerged = true;
-				var increasedScore = Math.pow(this.mantissa, this.grid[i + 1][j].tileValue - 1);
+				var increasedScore = Math.pow(this.mantissa, this.grid[i + 1][j].tileValue);
 				this.grid[i + 1][j].DOMRef.innerHTML = "<span>" + increasedScore + "</span>";
 				this.addToScore(increasedScore);
-				this.grid[i + 1][j].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i + 1][j].tileValue - 1];
+				this.grid[i + 1][j].DOMRef.style.backgroundColor = TILE_COLOR_ARRAY[this.grid[i + 1][j].tileValue % TILE_COLOR_ARRAY.length - 1];
 				this.grid[i + 1][j].DOMRef.style.webkitAnimation = this.animationPowerUpDown;
 				that = this;
 				thatTile = this.grid[i + 1][j];
