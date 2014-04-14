@@ -8,6 +8,8 @@ Based on the [works of Gabriele Cirulli](http://gabrielecirulli.github.io/2048/)
 
 This code is developed from scratch but is identical in concept and created with an additional agenda of developing an extensible framework for experimenting with the game itself.
 
+#### { [Play the game](http://abhishekcghosh.github.io/RNGame/) }
+
 ### Features already implemented:
 
 * **Multiple game instances** one after another in the game area.
